@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>The Gnome Zone</title>
+</head>
+
+<script src="https://unpkg.com/@pqina/flip/dist/flip.min.js"></script>
+<link href="https://unpkg.com/@pqina/flip/dist/flip.min.css" rel="stylesheet">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Yantramanav:wght@500&display=swap" rel="stylesheet">
+
+<body>
+    <div style="position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); text-align: center">
+        <h1 style="font-size: xxx-large; font-family: 'Yantramanav', sans-serif;">You've been gnomed!</h1>
+        <table>
+            <tr>
+                <td>
+                    <img src="gnome.png" style="height: 300px;">
+                </td>
+                <td>
+                    <div style="text-align: center; min-width: 400px;">
+                        <div id="counter" class="tick" data-value="00" data-did-init="setupFlip" style="font-size: 100px; margin: 0; font-family: 'Yantramanav', sans-serif;">
+                            <div data-repeat="true" aria-hidden="true">
+                                <span data-view="flip"></span>
+                            </div>
+                        </div>
+                        <p style="font-size: 20px; font-family: 'Yantramanav', sans-serif;">other people have been gnomed</p>
+                    </div>
+                </td>
+            </tr>
+    </table>
+
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-database.js"></script>
+    <script>
+        // Your web app's Firebase configuration
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDYiwQjfjBhAYLWNwRPLbd4rsbvI_XcaHc",
+            authDomain: "get-gnomed.firebaseapp.com",
+            databaseURL: "https://get-gnomed-default-rtdb.firebaseio.com",
+            projectId: "get-gnomed",
+            storageBucket: "get-gnomed.appspot.com",
+            messagingSenderId: "503268020395",
+            appId: "1:503268020395:web:874bbd0048ff6dfe7a27ee"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+    </script>
+</body>
+</html>
+<script>
+    document.getElementById("counter").setAttribute("data-value", 0);
+
+    firebase.database().ref('gnomed').on('value', (snapshot) => {
+        document.getElementById("counter").setAttribute("data-value", snapshot.val());
+    });
+
+    firebase.database().ref('gnomed').get().then((snapshot) => {
+        firebase.database().ref("/").update({
+            gnomed: parseInt(snapshot.val()) + 1
+        });
+    });
+</script>
